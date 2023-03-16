@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './terminal.css';
+import Axios from "axios";
 
+function getCommand(){
+  
+}
 
 function Terminal() {
   const [input, setInput] = useState("");
@@ -12,8 +16,28 @@ function Terminal() {
       inputref.current.focus();
     }
   })
+  const fetchGetCommand = () => {
+    let newOutput = "";
+    newOutput = output + "\n" + "$" + input + "\n";
+    Axios.get("https://localhost:44343/api/Command/cmd?command=" + input).then((res) => {
+      console.log(res.data);
+      newOutput += res.data;
+      setOutput(newOutput);
+      setInput("")
+    });          
+  }
+  
     return (
-      <div className="Terminal">
+      <div 
+      className="Terminal"
+      onClick={()=>{
+        const input = document.getElementById("input");
+        input?.focus();
+      }}
+      >
+        <div className="terminal">
+          {output}
+        </div>
         <input 
           ref={inputref}
           type='text'
@@ -21,26 +45,11 @@ function Terminal() {
           onChange={e=>setInput(e.target.value)}
           onKeyDown={e =>{
             if(e.key === "Enter"){
-              let newOutput = "";
-              newOutput = output + "\n" + "$" + input + "\n";
-              switch (input){
-                case "ls":
-                  newOutput += "list of projext";
-                  break;
-                case "pwd":
-                  newOutput += "user";
-                  break;
-                default:
-                  newOutput += "unkow command";
-              }
-              setOutput(newOutput);
-              setInput("")
+              fetchGetCommand();
             }
           }}
           />
-        <div className="terminal">
-          {output}
-        </div>
+        
       </div>
     );
   }
