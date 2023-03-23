@@ -1,56 +1,24 @@
-import React, { useEffect, useRef, useState } from 'react';
-import './terminal.css';
-import Axios from "axios";
-
-function getCommand(){
-  
-}
-
+import { Grid } from '@mui/material';
+import React from 'react';
+import Command from './command'
+import Sidebar from './sidebar'
+import Header from './header'
+import './terminal.css'
 function Terminal() {
-  const [input, setInput] = useState("");
-  const [output, setOutput] = useState("");
-  const inputref = useRef<HTMLInputElement>(null);
 
-  useEffect(()=>{
-    if (inputref.current !== null) {
-      inputref.current.focus();
-    }
-  })
-  const fetchGetCommand = () => {
-    let newOutput = "";
-    newOutput = output + "\n" + "$" + input + "\n";
-    Axios.get("https://localhost:44343/api/Command/cmd?command=" + input).then((res) => {
-      console.log(res.data);
-      newOutput += res.data;
-      setOutput(newOutput);
-      setInput("")
-    });          
-  }
-  
     return (
-      <div 
-      className="Terminal"
-      onClick={()=>{
-        const input = document.getElementById("input");
-        input?.focus();
-      }}
-      >
-        <div className="terminal">
-          {output}
-        </div>
-        <input 
-          ref={inputref}
-          type='text'
-          value={input}
-          onChange={e=>setInput(e.target.value)}
-          onKeyDown={e =>{
-            if(e.key === "Enter"){
-              fetchGetCommand();
-            }
-          }}
-          />
-        
+      <div>
+        <Header/>
+        <Grid container style = {{height:"100vh"}}>
+          <Grid xs={10}>
+            <Command/>
+           </Grid>
+          <Grid xs={2}>
+            <Sidebar/>
+          </Grid>
+        </Grid>
       </div>
+      
     );
   }
   

@@ -1,19 +1,1 @@
-.Terminal {
-    background-color: #333;
-    color: white;
-    height: 100vh;
-    padding: 1rem;
-    box-sizing: border-box;
-    white-space: pre-line;
-    width: 100%;
-    overflow: auto;
-}
 
-input {
-    border: none;
-    outline: none;
-    margin: 0;
-    padding: 0;
-    background-color: transparent;
-    color: white;
-}
